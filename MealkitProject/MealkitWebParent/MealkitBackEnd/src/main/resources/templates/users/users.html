@@ -54,38 +54,88 @@
 			</nav>
 		</div>
 		<div>
-			<h2>사용자 관리 페이지</h2>
-			<a th:href="@{/users/new}">사용자 등록하기</a>
+			<h2><a th:href="@{'/users/'}" class="text-dark">사용자 관리 페이지</a></h2>
 		</div>
 		<div th:if="${message != null}"
 			class="alert alert-success text-center">[[${message}]]</div>
+			
+		<div class="d-flex justify-content-center">
+		<form th:action="@{/users/page/1}" class="form-inline m-3">
+			단순 검색: 
+			<input type="hidden" name="sortField" th:value="${sortField}"/>		
+			<input type="hidden" name="sortDir" th:value="sortDir"/>
+			<input class="form-control m-3" type="search" name="keyword" th:value="${keyword}" required/>
+			<input class="btn btn-dark m-2" type="submit" />
+		</form>
+		<a th:href="@{/users/new}" class="ml-auto p-1 fas fa-user-plus fa-3x icon-green"></a>
+		</div>
+			
 		<table
 			class="table table-bordered table-striped table-hover table-responsive-xl">
 			<thead class="thead-light">
 				<tr>
-					<th>아이디</th>
-					<th>사진</th>
-					<th>이름</th>
-					<th>이메일</th>
-					<th>소속</th>
-					<th>활성여부</th>
-					<th></th>
+					<th><a th:if="${sortField =='id'}"
+						th:href="@{'/users/page/' + ${currentPage} + '?sortField=id&sortDir=' + ${reverseSortDir}+ ${keyword != null? '&keyword=' + keyword:''}}">아이디</a>
+						<a th:if="${sortField !='id'}" class="text-dark"
+						th:href="@{'/users/page/' + ${currentPage} + '?sortField=id&sortDir=' + ${sortDir}+ ${keyword != null? '&keyword=' + keyword:''}}">아이디</a>
+						<span th:if="${sortField =='id'}"
+						th:class="${sortDir == 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}"></span>
+					</th>
+					<th><a th:if="${sortField == 'photos'}"
+						th:href="@{'/users/page/' + ${currentPage} + '?sortField=photos&sortDir=' + ${reverseSortDir}+ ${keyword != null? '&keyword=' + keyword:''}}">사진</a>
+						<a th:if="${sortField !='photos'}" class="text-dark"
+						th:href="@{'/users/page/' + ${currentPage} + '?sortField=photos&sortDir=' + ${sortDir}+ ${keyword != null? '&keyword=' + keyword:''}}">사진</a>
+						<span th:if="${sortField =='photos'}"
+						th:class="${sortDir == 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}"></span>
+					</th>
+					<th><a th:if="${sortField == 'name'}"
+						th:href="@{'/users/page/' + ${currentPage} + '?sortField=name&sortDir=' + ${reverseSortDir}+ ${keyword != null? '&keyword=' + keyword:''}}">이름</a>
+						<a th:if="${sortField !='name'}" class="text-dark"
+						th:href="@{'/users/page/' + ${currentPage} + '?sortField=name&sortDir=' + ${sortDir}+ ${keyword != null? '&keyword=' + keyword:''}}">이름</a>
+						<span th:if="${sortField =='name'}"
+						th:class="${sortDir == 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}"></span>
+					</th>
+										<th><a th:if="${sortField == 'email'}"
+						th:href="@{'/users/page/' + ${currentPage} + '?sortField=email&sortDir=' + ${reverseSortDir}+ ${keyword != null? '&keyword=' + keyword:''}}">이메일</a>
+						<a th:if="${sortField !='email'}" class="text-dark"
+						th:href="@{'/users/page/' + ${currentPage} + '?sortField=email&sortDir=' + ${sortDir}+ ${keyword != null? '&keyword=' + keyword:''}}">이메일</a>
+						<span th:if="${sortField =='email'}"
+						th:class="${sortDir == 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}"></span>
+					</th>
+										<th><a th:if="${sortField == 'roles'}"
+						th:href="@{'/users/page/' + ${currentPage} + '?sortField=roles&sortDir=' + ${reverseSortDir}+ ${keyword != null? '&keyword=' + keyword:''}}">권한</a>
+						<a th:if="${sortField !='roles'}" class="text-dark"
+						th:href="@{'/users/page/' + ${currentPage} + '?sortField=roles&sortDir=' + ${sortDir}+ ${keyword != null? '&keyword=' + keyword:''}}">권한</a>
+						<span th:if="${sortField =='roles'}"
+						th:class="${sortDir == 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}"></span>
+					</th>
+					<th><a th:if="${sortField == 'enabled'}"
+						th:href="@{'/users/page/' + ${currentPage} + '?sortField=enabled&sortDir=' + ${reverseSortDir}+ ${keyword != null? '&keyword=' + keyword:''}}">활성여부</a>
+						<a th:if="${sortField !='enabled'}" class="text-dark"
+						th:href="@{'/users/page/' + ${currentPage} + '?sortField=enabled&sortDir=' + ${sortDir} + ${keyword != null? '&keyword=' + keyword:''}}">활성여부</a>
+						<span th:if="${sortField =='enabled'}"
+						th:class="${sortDir == 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}"></span>
+					</th>
+					<th><span class="text-dark">계정관리</span></th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr th:each="user : ${listUsers}">
 					<td>[[${user.id}]]</td>
-					<td>
-					<span th:if="${user.photos==null}" class="fas fa-portrait fa-4x icon-dark"></span>
-					<img th:if="${user.photos!=null}" th:src="@{${user.photosImagePath}}" width=100px/>
-					</td>
+					<td><span th:if="${user.photos==null}"
+						class="fas fa-portrait fa-4x icon-dark"></span> <img
+						th:if="${user.photos!=null}" th:src="@{${user.photosImagePath}}"
+						width=100px /></td>
 					<td>[[${user.name}]]</td>
 					<td>[[${user.email}]]</td>
-					<td></td>
+					<td>[[${user.roles}]]</td>
 					<td><a th:if="${user.enabled == true}"
-						class="fas fa-check-circle fa-2x icon-green" th:href="@{'/users/' + ${user.id} + '/enabled/false'}" title="클릭 시, 비활성화"></a> <a
-						th:if="${user.enabled == false}"
-						class="fas fa-times-circle fa-2x icon-red" th:href="@{'/users/' + ${user.id} + '/enabled/true'}" title="클릭 시, 활성화"></a></td>
+						class="fas fa-check-circle fa-2x icon-green"
+						th:href="@{'/users/' + ${user.id} + '/enabled/false'}"
+						title="클릭 시, 비활성화"></a> <a th:if="${user.enabled == false}"
+						class="fas fa-times-circle fa-2x icon-red"
+						th:href="@{'/users/' + ${user.id} + '/enabled/true'}"
+						title="클릭 시, 활성화"></a></td>
 					<td><a class="fas fa-edit fa-2x icon-dark"
 						th:href="@{'/users/edit/'+ ${user.id}}" title="사용자 수정하기"></a>
 						&nbsp; <a class="fas fa-trash fa-2x icon-dark link-delete"
@@ -95,9 +145,39 @@
 		</table>
 
 	</div>
-
+			<div class="d-flex justify-content-center">
+		<form th:action="@{/users/page/1}" class="form-inline m-3">
+			단순 검색: 
+			<input class="form-control ml-3" type="search" name="keyword" required/>
+			<input class="btn btn-dark ml-2" type="submit" name="keyword" value="검색"/>
+		</form>
+		</div>
+	<div class="text-center m-1" th:if="${totalUsers > 0}">
+		<span>총 [[${totalUsers}]]명 중 [[${startCount}]]번부터
+			[[${endCount}]]번까지 보여주는 중</span>
 	</div>
-
+	<div class="text-center m-1" th:unless="${totalUsers > 0}">
+		<span>사용자가 없습니다</span>
+	</div>
+	<div th:if="${totalPages>1}">
+	<nav>
+		<ul class="pagination justify-content-center">
+			<li th:class="${currentPage > 1 ? 'page-item': 'page-item disabled'}"><a
+				class="page-link" th:href="@{'/users/page/1?sortField=' + ${sortField}+ '&sortDir=' + ${sortDir} + ${keyword != null? '&keyword=' + keyword:''}}">처음</a></li>
+			<li th:class="${currentPage > 1 ? 'page-item': 'page-item disabled'}"><a
+				class="page-link" th:href="@{'/users/page/' + ${currentPage-1} + '?sortField=' +${sortField} + '&sortDir=' + ${sortDir} + ${keyword != null? '&keyword=' + keyword:''}}">이전</a></li>
+			<li th:class="${currentPage != i ? 'page-item': 'page-item active'}"
+				th:each="i:${#numbers.sequence(1,totalPages)}"><a
+				class="page-link" th:href="@{'/users/page/' +${i} + '?sortField=' +${sortField} + '&sortDir=' + ${sortDir} + ${keyword != null? '&keyword=' + keyword:''}}">[[${i}]]</a></li>
+			<li
+				th:class="${currentPage < totalPages ? 'page-item': 'page-item disabled'}"><a
+				class="page-link" th:href="@{'/users/page/' + ${currentPage+1} + '?sortField=' +${sortField} + '&sortDir=' + ${sortDir} + ${keyword != null? '&keyword=' + keyword:''}}">다음</a></li>
+			<li
+				th:class="${currentPage < totalPages ? 'page-item':'page-item disabled'}"><a
+				class="page-link" th:href="@{'/users/page/' + ${totalPages} + '?sortField=' +${sortField} + '&sortDir=' + ${sortDir} + ${keyword != null? '&keyword=' + keyword:''}}">마지막</a></li>
+		</ul>
+	</nav>
+	</div>
 	<hr>
 	<!-- Footer 영역 -->
 	<footer class="footer" style="text-align: center">

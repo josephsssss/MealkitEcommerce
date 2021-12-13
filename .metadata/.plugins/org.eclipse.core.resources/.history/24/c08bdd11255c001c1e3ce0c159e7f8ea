@@ -1,0 +1,128 @@
+package com.moa.admin.user;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.List;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.test.annotation.Rollback;
+
+import com.moa.common.entity.Role;
+import com.moa.common.entity.User;
+
+@DataJpaTest(showSql=false)
+@AutoConfigureTestDatabase(replace=Replace.NONE)
+@Rollback(false)
+public class UserRepositoryTest {
+	@Autowired
+	private UserRepository repo;
+	
+	@Autowired
+	private TestEntityManager entityManager;
+	
+	@Test
+	public void testCreateUserWithOneRole() {
+		Role roleStaff = entityManager.find(Role.class, 3);
+		User userSJH = new User("SJH@sleep.net", "1234", "SJH", 1);
+		userSJH.addRole(roleStaff);
+		
+		User savedUser = repo.save(userSJH);
+		assertThat(savedUser.getId()).isGreaterThan(0);
+	}
+	
+	@Test
+	public void testCreateUserWithTwoRole() {
+		User userKTH = new User("KTH@sleep.net", "1234", "KTH", 1);
+		Role roleStaff = new Role(3);
+		Role roleAssisstant = new Role(5);
+		
+		userKTH.addRole(roleStaff);
+		userKTH.addRole(roleAssisstant);
+		
+		User savedUser = repo.save(userKTH);
+		
+		assertThat(savedUser.getId()).isGreaterThan(0);
+	}
+	
+	@Test
+	public void testListAllUsers() {
+		Iterable<User> listUsers = repo.findAll();
+		listUsers.forEach(user -> System.out.println(user));
+	}
+	
+	@Test
+	public void testGetUserById() {
+		User user = repo.findById(1).get();
+		System.out.println(user);
+		assertThat(user).isNotNull();
+	}
+	
+	@Test
+	public void testUpdateUserDetails() {
+		User user = repo.findById(1).get();
+		user.setEnabled(true);
+		user.setEmail("updated@woke.up");
+		repo.save(user);
+	}
+	
+	@Test
+	public void testUpdateUserRole() {
+		User user = repo.findById(1).get();
+		Role roleStaff = new Role(3);
+		Role roleSalesperson = new Role(2);
+		user.getRoles().remove(roleStaff);
+		user.addRole(roleSalesperson);
+		repo.save(user);
+	}
+	
+	@Test
+	public void testDeleteUser() {
+		Integer userId = 5;
+		repo.deleteById(userId);
+	}
+	
+	@Test
+	public void testGetUserByEmail() {
+		String email ="updated@woke.up";
+		User userByEmail = repo.getUserByEmail(email);
+		assertThat(userByEmail).isNull();
+	}
+	
+	@Test
+	public void testCountById() {
+		Integer id = 2;
+		Long countById = repo.countById(id);
+		assertThat(countById).isNotNull().isGreaterThan(0);
+	}
+	
+	@Test
+	public void testDiableUser() {
+		Integer id = 1;
+		repo.updateEnabledStatus(id, false);
+	}
+	
+	@Test
+	public void testEnbleUser() {
+		Integer id = 1;
+		repo.updateEnabledStatus(id, true);
+	}
+	
+	@Test
+	public void testListFirstPage() {
+		int pageNumber = 1;
+		int pageSize = 3;
+		Pageable pageable = PageRequest.of(pageNumber, pageSize);
+		Page<User> page = repo.findAll(pageable);
+		List<User> listUsers = page.getContent();
+		listUsers.forEach(user ->System.out.println(user));
+		assertThat(listUsers.size()).isEqualTo(pageSize);
+	}
+}
