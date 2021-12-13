@@ -1,0 +1,6 @@
+package com.moa.common.entity;
+
+@
+public class Code_auth {
+
+}

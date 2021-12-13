@@ -1,0 +1,68 @@
+package com.moa.admin.user;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.test.annotation.Rollback;
+
+import com.moa.common.entity.Role;
+import com.moa.common.entity.User;
+
+@DataJpaTest
+@AutoConfigureTestDatabase(replace=Replace.NONE)
+@Rollback(false)
+public class UserRepositoryTest {
+	@Autowired
+	private UserRepository repo;
+	
+	@Autowired
+	private TestEntityManager entityManager;
+	
+	@Test
+	public void testCreateUserWithOneRole() {
+		Role roleStaff = entityManager.find(Role.class, 3);
+		User userBBY = new User("BBY@sleep.net", "1234", "BBY", 1);
+		userBBY.addRole(roleStaff);
+		
+		User savedUser = repo.save(userBBY);
+		assertThat(savedUser.getId()).isGreaterThan(0);
+	}
+	
+	@Test
+	public void testCreateUserWithTwoRole() {
+		User userKTH = new User("KTH@sleep.net", "1234", "KTH", 1);
+		Role roleStaff = new Role(3);
+		Role roleAssisstant = new Role(5);
+		
+		userKTH.addRole(roleStaff);
+		userKTH.addRole(roleAssisstant);
+		
+		User savedUser = repo.save(userKTH);
+		
+		assertThat(savedUser.getId()).isGreaterThan(0);
+	}
+	
+	@Test
+	public void testListAllUsers() {
+		Iterable<User> listUsers = repo.findAll();
+		listUsers.forEach(user -> System.out.println(user));
+	}
+	
+	@Test
+	public void testGetUserById() {
+		User user = repo.findById(1).get();
+		System.out.println(user);
+		assertThat(user).isNotNull();
+	}
+	
+	@Test
+	public void testUpdateUserDetails() {
+		User user = repo.findById(1).get();
+		user.setEnabled(true);
+	}
+}

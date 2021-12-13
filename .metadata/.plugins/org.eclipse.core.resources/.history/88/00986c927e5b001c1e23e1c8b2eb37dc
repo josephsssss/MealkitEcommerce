@@ -1,0 +1,30 @@
+package com.moa.common.entity;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "user")
+public class User {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
+	@Column(length=64, nullable = false, unique = true)
+	private String email;
+	@Column(length=64, nullable = false)
+	private String password;
+	@Column(name = "first_name", length = 16, nullable = false)
+	private String firstName;
+	@Column(name = "first_name", length = 16, nullable = false)
+	private String lastName;
+	@Column(length=64)
+	private String photos;
+	@Enumerated(EnumType.ORDINAL)
+    private Gender gender;
+	private boolean enabled;
+}

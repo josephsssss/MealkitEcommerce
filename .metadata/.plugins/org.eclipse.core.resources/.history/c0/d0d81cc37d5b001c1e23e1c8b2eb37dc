@@ -1,0 +1,7 @@
+package com.moa.common.entity;
+
+@Entity
+@Table(name = "user")
+public class User {
+
+}

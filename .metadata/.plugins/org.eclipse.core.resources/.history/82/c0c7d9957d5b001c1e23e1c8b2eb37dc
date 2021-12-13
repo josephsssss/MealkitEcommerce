@@ -1,0 +1,5 @@
+package com.moa.common.entity;
+
+public class User {
+
+}

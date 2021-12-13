@@ -1,0 +1,6 @@
+package com.moa.admin.user;
+
+@Service
+public class UserService {
+
+}

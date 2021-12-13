@@ -1,0 +1,5 @@
+package com.moa.admin.user;
+
+public class RoleRepositoryTest {
+
+}

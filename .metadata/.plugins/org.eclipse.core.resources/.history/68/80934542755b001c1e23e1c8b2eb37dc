@@ -1,0 +1,7 @@
+server.port=8081
+server.servlet.context-path=/MealkitAdmin
+
+spring.datasource.url=jdbc:ymsql://localhost:3306/mealkitdb
+spring.datasource.username=root
+spring.datasource.password=password
+
