@@ -58,7 +58,9 @@
 		</div>
 		<div th:if="${message != null}"
 			class="alert alert-success text-center">[[${message}]]</div>
-			
+		<a th:href="@{/users/export/csv}">Export to CSV</a>
+		
+		
 		<div class="d-flex justify-content-center">
 		<form th:action="@{/users/page/1}" class="form-inline m-3">
 			단순 검색: 

@@ -8,19 +8,26 @@
 		<artifactId>MealkitWebParent</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	
+
 	<artifactId>MealkitBackEnd</artifactId>
 	<name>MealkitBackEnd</name>
 	<description>Mealkit Admin</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>
-	
+
 	<dependencies>
-	<dependency>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-devtools</artifactId>
-	</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>net.sf.supercsv</groupId>
+			<artifactId>super-csv</artifactId>
+			<version>2.4.0</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>

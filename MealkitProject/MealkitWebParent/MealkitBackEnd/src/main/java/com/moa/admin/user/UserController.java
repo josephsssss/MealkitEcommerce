@@ -3,6 +3,8 @@ package com.moa.admin.user;
 import java.io.IOException;
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
@@ -28,7 +30,7 @@ public class UserController {
 	
 	@GetMapping("/users")
 	public String listFirstPage(Model model) {
-		return listByPage(1, model, "name", "asc", null);
+		return listByPage(1, model, "id", "asc", null);
 	}
 	
 	@GetMapping("/users/page/{pageNum}")
@@ -78,10 +80,15 @@ public class UserController {
 		User savedUser = service.save(user);
 		String uploadDir = "user-photos/" + savedUser.getId();
 		FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
-		}
-		//service.save(user);
+		} 
+		service.save(user);
 		redirectAttributes.addFlashAttribute("message", "사용자 등록 완료");
-		return "redirect:/users";
+		return getRedirectURLtoAffectedUser(user);
+	}
+
+	private String getRedirectURLtoAffectedUser(User user) {
+		String firstPartOfEmail = user.getEmail().split("@")[0];
+		return "redirect:/users/page/1?sortField=id&sortDir=asc&keyword=" + firstPartOfEmail;
 	}
 	
 	@GetMapping("/users/edit/{id}")
@@ -117,5 +124,12 @@ public class UserController {
 		String message = "해당 사용자(ID:"+id+")는 "+status+" 되었습니다";
 		redirectAttributes.addFlashAttribute("message", message);
 		return "redirect:/users";
+	}
+	
+	@GetMapping("/users/export/csv")
+	public void exportToCSV(HttpServletResponse response) throws IOException {
+		List<User> listUsers = service.listAll();
+		CsvExporter exporter = new CsvExporter();
+		exporter.export(listUsers, response);
 	}
 }
