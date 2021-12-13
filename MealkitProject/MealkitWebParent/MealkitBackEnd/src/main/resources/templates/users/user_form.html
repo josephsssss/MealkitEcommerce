@@ -4,9 +4,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport"
 	content="width=device-width,initial-scale=1.0, minimum-scale=1.0">
-<title>사용자 등록하기</title>
+<title>[[${pageTitle}]]</title>
 <link rel="stylesheet" type="text/css"
 	th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/fontawesome/all.css}" />
 <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
 <script type="text/javascript"
 	th:src="@{/webjars/bootsrap/js/bootstrap.min.js}"></script>
@@ -52,13 +53,14 @@
 			</nav>
 		</div>
 		<div>
-			<h2>사용자 관리 | 사용자 등록</h2>
+			<h2>사용자 관리 | [[${pageTitle}]]</h2>
 		</div>
 
 		<form th:action="@{/users/save}" method="post"
-			style="max-width: 700px; margin: 0 auto" th:object="${user}"
-			onsubmit="return checkEmailUnique(this);">
-			<div class="border border-dark rounded p-3">
+			style="max-width: 800px; margin: 0 auto" th:object="${user}"
+			onsubmit="return checkEmailUnique(this);" enctype="multipart/form-data">
+			<input type="hidden" th:field="*{id}" />
+			<div class="border border-dark rounded p-4">
 
 				<div class="form-group row">
 					<label class="col-sm-4 col-form-labe">이메일</label>
@@ -70,8 +72,11 @@
 				<div class="form-group row">
 					<label class="col-sm-4 col-form-labe">비밀번호</label>
 					<div class="col-sm-8">
-						<input type="password" class="form-control" th:field="*{password}"
-							required minlength="4" maxlength="32" />
+						<input th:if="${user.id==null}" type="password"
+							class="form-control" th:field="*{password}" required
+							minlength="4" maxlength="32" /> <input th:if="${user.id!=null}"
+							type="password" class="form-control" th:field="*{password}"
+							minlength="4" maxlength="32" placeholder="빈 칸이면 비밀번호를 변경하지 않습니다" />
 					</div>
 				</div>
 				<div class="form-group row">
@@ -105,11 +110,19 @@
 				<div class="form-group row">
 					<label class="col-sm-4 col-form-labe">활성화</label>
 					<div class="col-sm-8">
-
 						<input class="m-2" type="checkbox" th:field="*{enabled}" />
-
 					</div>
 				</div>
+
+				<div class="form-group row">
+					<label class="col-sm-4 col-form-labe">사진</label>
+					<div class="col-sm-8">
+						<input class="mb-2" type="file" id="imageFile"
+							accept="image/png, image/jpeg" / name="image"> <img id="thumbnail"
+							class="img-fluid" alt="미리보기" th:src="@{/images/default-user.png}" />
+					</div>
+				</div>
+
 			</div>
 			<div class="text-center">
 				<input type="submit" value="저장" class="btn btn-dark m-3" /> <input
@@ -147,14 +160,37 @@ $(document).ready(function(){
 	$("#buttonCancel").on("click", function(){
 		window.location="[[@{/users}]]";
 	});
+	
+	$("#imageFile").change(function(){
+	fileSize = this.files[0].size;
+	if (fileSize > 1048576){
+		this.setCustomValidity("1메가바이트 이하 사진만 업로드 가능합니다");
+		this.reportValidity();
+	} else{
+	this.setCustomValidity("");
+	showImageThumbnail(this);
+	}
+	});
 });
+
+function showImageThumbnail(fileInput){
+	var file = fileInput.files[0];
+	var reader = new FileReader();
+	reader.onload = function(e){
+		$("#thumbnail").attr("src", e.target.result);
+	};
+	reader.readAsDataURL(file);
+};
+
+
 
 
 function checkEmailUnique(form){
 	url = "[[@{/users/check_email}]]";
 	userEmail = $("#email").val();
+	userId = $("#id").val();
 	csrfValue = $("input[name='_csrf']").val();
-	params = {email: userEmail, _csrf: csrfValue};
+	params = {id: userId, email: userEmail, _csrf: csrfValue};
 	
 		$.post(url, params, function(response){
 		if(response == "OK"){

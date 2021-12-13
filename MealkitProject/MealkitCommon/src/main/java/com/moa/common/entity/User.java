@@ -1,5 +1,6 @@
 package com.moa.common.entity;
 
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -12,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 
 
@@ -128,6 +130,11 @@ public class User {
 				+ photos + ", gender=" + gender + ", enabled=" + enabled + ", roles=" + roles + "]";
 	}
 	
+	@Transient
+	public String getPhotosImagePath() {
+		if (id == null || photos == null) return "/images/default-image.png";
+		return "/user-photos/"+this.id+"/"+this.photos;
+	}
 }
 
 

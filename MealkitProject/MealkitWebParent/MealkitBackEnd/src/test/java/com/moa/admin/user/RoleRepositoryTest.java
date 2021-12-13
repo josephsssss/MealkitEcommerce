@@ -23,17 +23,17 @@ public class RoleRepositoryTest {
 
 	@Test
 	public void testCreateFirstRole() {
-		Role roleAdmin = new Role("Admin", "manages everything");
+		Role roleAdmin = new Role("관리자", "모든 권한을 가진다");
 		Role savedRole = repo.save(roleAdmin);
 		assertThat(savedRole.getId()).isGreaterThan(0);
 	}
 	
 	@Test
 	public void testCreateRestRoles() {
-		Role roleSalesperson = new Role("Salesperson", "sets product price, manages customers, shipping, orders and sales report");
-		Role roleStaff = new Role("Staff", "manages categories, brands, products, articles and menus");
-		Role roleShipper = new Role("Shipper", "view products, orders and update order status");
-		Role roleAssisstant = new Role("Assistant", "deals with customer questions and reviews");
+		Role roleSalesperson = new Role("판매자", "상품등록, 고객관리, 배송지, 주문, 판매보고서 열람권한을 가진다");
+		Role roleStaff = new Role("관리스태프", "상품분류, 상품관리, 브랜드 관리, 글, 메뉴 관리 권한을 가진다");
+		Role roleShipper = new Role("배송자", "상품열람, 주문확인, 배송상태 변경이 가능하다");
+		Role roleAssisstant = new Role("고객응대", "고객불만접수, 고객질문응답, 고객후기들을 관리한다");
 		repo.saveAll(List.of(roleSalesperson, roleStaff, roleShipper, roleAssisstant));
 	}
 }

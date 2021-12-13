@@ -5,11 +5,14 @@
 <meta name="viewport"
 	content="width=device-width,initial-scale=1.0, minimum-scale=1.0">
 <title>사용자 관리 페이지</title>
-<link rel="stylesheet" type="text/css"
-	th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" />
+
+<link rel="stylesheet" type="text/css" th:href="@{/fontawesome/all.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/style.css}" />
 <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
 <script type="text/javascript"
 	th:src="@{/webjars/bootsrap/js/bootstrap.min.js}"></script>
+<link rel="stylesheet" type="text/css"
+	th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" />
 </head>
 <body>
 	<div class="container-fluid">
@@ -72,12 +75,21 @@
 			<tbody>
 				<tr th:each="user : ${listUsers}">
 					<td>[[${user.id}]]</td>
-					<td></td>
+					<td>
+					<span th:if="${user.photos==null}" class="fas fa-portrait fa-4x icon-dark"></span>
+					<img th:if="${user.photos!=null}" th:src="@{${user.photosImagePath}}" width=100px/>
+					</td>
 					<td>[[${user.name}]]</td>
 					<td>[[${user.email}]]</td>
 					<td></td>
-					<td>[[${user.enabled}]]</td>
-					<td>Edit &nbsp; Delete</td>
+					<td><a th:if="${user.enabled == true}"
+						class="fas fa-check-circle fa-2x icon-green" th:href="@{'/users/' + ${user.id} + '/enabled/false'}" title="클릭 시, 비활성화"></a> <a
+						th:if="${user.enabled == false}"
+						class="fas fa-times-circle fa-2x icon-red" th:href="@{'/users/' + ${user.id} + '/enabled/true'}" title="클릭 시, 활성화"></a></td>
+					<td><a class="fas fa-edit fa-2x icon-dark"
+						th:href="@{'/users/edit/'+ ${user.id}}" title="사용자 수정하기"></a>
+						&nbsp; <a class="fas fa-trash fa-2x icon-dark link-delete"
+						th:href="@{'/users/delete/'+ ${user.id}}" title="사용자 삭제하기"></a></td>
 				</tr>
 			</tbody>
 		</table>
@@ -102,8 +114,5 @@
 				PlayMealKit</strong> ALL RIGHTS RESERVED.
 		</p>
 	</footer>
-	<!-- class="footer" -->
-
-
 </body>
 </html>
