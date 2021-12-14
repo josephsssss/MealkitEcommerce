@@ -1,0 +1,39 @@
+package com.moa.admin.user;
+
+import java.io.IOException;
+import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
+
+import com.lowagie.text.Document;
+import com.lowagie.text.Font;
+import com.lowagie.text.PageSize;
+import com.lowagie.text.Paragraph;
+import com.lowagie.text.pdf.BaseFont;
+import com.lowagie.text.pdf.PdfWriter;
+import com.moa.common.entity.User;
+
+public class UserPdfExporter extends AbstractExporter {
+
+	public void export(List<User> listUsers, HttpServletResponse response) throws IOException {
+		super.setResponseHeader(response, "application/pdf", ".pdf");
+
+		Document document = new Document(PageSize.A4, 50, 50, 30, 40);
+
+		BaseFont bfKorean_ = BaseFont.createFont("HYGoThic-Medium",
+
+				"UniKS-UCS2-H", BaseFont.NOT_EMBEDDED);
+		Font korean12_ = new Font(bfKorean_, 12, Font.NORMAL);
+		Font korean14_ = new Font(bfKorean_, 14, Font.NORMAL);
+		Font korean16_ = new Font(bfKorean_, 16, Font.NORMAL);
+		Font korean18_ = new Font(bfKorean_, 18, Font.NORMAL, new Color(0, 0, 255));
+		Font korean32_ = new Font(bfKorean_, 32, Font.BOLD);
+
+		PdfWriter.getInstance(document, response.getOutputStream());
+		document.open();
+		document.add(new Paragraph());
+
+		document.close();
+	}
+
+}

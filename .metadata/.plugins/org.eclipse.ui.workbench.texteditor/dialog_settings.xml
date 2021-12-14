@@ -5,13 +5,14 @@
 		<item key="DIALOG_Y_ORIGIN" value="576"/>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value="isEmpty"/>
+		<item key="selection" value="edit"/>
 		<item key="wrap" value="true"/>
 		<item key="casesensitive" value="false"/>
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
+			<item value="edit"/>
 			<item value="isEmpty"/>
 			<item value="Saved"/>
 			<item value="hover"/>
@@ -26,13 +27,12 @@
 			<item value="delete"/>
 			<item value="text-center"/>
 			<item value="show"/>
-			<item value="showWar"/>
 		</list>
 		<list key="replacehistory">
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
-		<item key="DIALOG_X_ORIGIN" value="-741"/>
+		<item key="DIALOG_X_ORIGIN" value="8"/>
 		<item key="DIALOG_Y_ORIGIN" value="890"/>
 		<item key="DIALOG_WIDTH" value="322"/>
 		<item key="DIALOG_HEIGHT" value="391"/>

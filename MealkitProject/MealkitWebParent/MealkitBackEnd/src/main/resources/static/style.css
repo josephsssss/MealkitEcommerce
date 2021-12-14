@@ -5,3 +5,21 @@
 *.icon-green {color: green}
 *.icon-dark {color: grey}
 *.icon-red {color: red}
+
+.a:link{
+  text-decoration: none!important;
+}
+
+@media screen and (max-width: 768px){
+	
+	div.full-details { display:none }
+}
+
+@media screen and (min-width: 768px) and (maxwidth: 1024px){
+	
+	div.full-details { display:block; }
+}
+
+@media screen and (min-width: 1024px){
+	
+}

@@ -1,0 +1,26 @@
+package com.moa.admin.user;
+
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
+
+import com.moa.common.entity.User;
+
+public abstract class AbstractExporter {
+	public void setResponseHeader(List<User> listUsers, HttpServletResponse response) throws IOException {
+		DateFormat dateFormmater = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
+		String timestamp = dateFormmater.format(new Date());
+		String fileName = "user_" + timestamp + ".csv";
+		// response.setCharacterEncoding("utf-8");
+		response.setCharacterEncoding("CP949");
+		response.setContentType("text/csv");
+
+		String headerKey = "Content-Disposition";
+		String headerValue = "attachment; filename=" + fileName;
+		response.setHeader(headerKey, headerValue);
+	}
+}
