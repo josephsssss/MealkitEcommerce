@@ -1,4 +1,4 @@
-package com.moa.admin.user;
+package com.moa.admin.user.export;
 
 import java.awt.Color;
 import java.io.IOException;
@@ -16,6 +16,7 @@ import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
+import com.moa.admin.user.AbstractExporter;
 import com.moa.common.entity.User;
 
 public class UserPdfExporter extends AbstractExporter {

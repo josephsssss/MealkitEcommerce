@@ -1,7 +1,21 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-<meta charset="utf-8">
+
+
+
+<head th:fragment="header(title)">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport"
+	content="width=device-width,initial-scale=1.0, minimum-scale=1.0">
+<title>[[${title}]]</title>
+<link rel="stylesheet" type="text/css"
+	th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/fontawesome/all.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/style.css}" />
+<script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+<script type="text/javascript"
+	th:src="@{/webjars/bootsrap/js/bootstrap.min.js}"></script>
+
 </head>
 <body>
 	<div th:fragment="user_export" th:remove="tag">
@@ -34,7 +48,6 @@
 			style="width: 100px" />
 		</a>
 	</div>
-
 	<div th:fragment="user_status" th:remove="tag">
 		<a th:if="${user.enabled == true}"
 			class="fas fa-check-circle fa-2x icon-green"
@@ -45,6 +58,7 @@
 			title="클릭 시, 활성화"></a>
 	</div>
 
+
 	<div th:fragment="user_actions" th:remove="tag">
 		<a class="fas fa-edit fa-2x icon-dark"
 			th:href="@{'/users/edit/'+ ${user.id}}" title="사용자 수정하기"></a> &nbsp;
@@ -52,4 +66,24 @@
 			th:href="@{'/users/delete/'+ ${user.id}}" title="사용자 삭제하기"></a>
 	</div>
 </body>
+
+
+<footer th:fragment="footer" style="text-align: center">
+<hr>
+	<p>
+		<!-- <div class="footer_nav">
+		<div class="footer_nav_container"> -->
+		<a href="."> Home</a> | <a href="." rel="nofollow">About</a> | <a
+			href="." rel="nofollow">Contact</a> | <a href="." rel="nofollow">Terms
+			of Use</a> | <a href="." rel="nofollow">Privacy Policy</a>
+	</p>
+	<p>
+		<img src="img/logo.jpg"> (주) PlayMealKit<br>
+		PlayMealKit@playmealkit.com <br> <br> COPYRIGHT(C) <strong>
+			PlayMealKit</strong> ALL RIGHTS RESERVED.
+	</p>
+
+
+</footer>
+
 </html>

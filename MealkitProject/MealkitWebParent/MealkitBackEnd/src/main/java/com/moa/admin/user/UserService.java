@@ -19,7 +19,7 @@ import com.moa.common.entity.User;
 @Service
 @Transactional
 public class UserService {
-	public static final int USER_PER_PAGE = 5;
+	public static final int USER_PER_PAGE = 1;
 	
 	@Autowired
 	private UserRepository userRepo;
