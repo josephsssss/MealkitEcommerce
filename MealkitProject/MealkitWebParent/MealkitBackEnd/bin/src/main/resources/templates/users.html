@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: header('밀키트 사용자 관리페이지')"></head>
+
+
+
+<body>
+
+	<div th:replace="navbar :: navbar('사용자 관리 페이지')"></div>
+
+	<div th:replace="fragments :: user_export"></div>
+
+	<div th:if="${message != null}" class="alert alert-success text-center">[[${message}]]</div>
+
+	<div class="full-details">
+		<table
+			class="table table-bordered table-striped table-hover table-responsive-xl">
+			<thead class="thead-light">
+				<tr>
+					<th class="hideable-column">
+					<th th:replace="fragments :: column_link('id', 'ID', 'tag')" />
+
+					<th>
+					<th th:replace="fragments :: column_link('photos', '사진', 'tag')" />
+
+					<th class="hideable-column">
+					<th th:replace="fragments :: column_link('name', '이름', 'tag')" />
+
+					<th>
+					<th th:replace="fragments :: column_link('email', '이메일', 'tag')" />
+
+					<th>
+					<th th:replace="fragments :: column_link('roles', '권한', 'none')" />
+
+					<th>
+					<th
+						th:replace="fragments :: column_link('enabled', '활성여부', 'none')" />
+
+					<th><span class="text-dark">사용자 관리</span></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="user : ${listUsers}">
+					<td class="hideable-column">[[${user.id}]]</td>
+					<td>
+						<div th:replace="fragments :: user_photos"></div>
+					</td>
+					<td>[[${user.name}]]</td>
+					<td class="hideable-column">[[${user.email}]]</td>
+					<td>[[${user.roles}]]</td>
+					<td>
+						<div th:replace="fragments :: user_status"></div>
+					</td>
+					<td>
+						<div th:replace="fragments :: user_actions"></div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<div th:replace="searchbar :: searchbar"></div>
+
+	<footer th:replace="fragments :: footer"></footer>
+</body>
+</html>

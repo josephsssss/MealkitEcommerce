@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+
+
+<head th:fragment="header(title)">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport"
+	content="width=device-width,initial-scale=1.0, minimum-scale=1.0">
+<title>[[${title}]]</title>
+<link rel="stylesheet" type="text/css"
+	th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/fontawesome/all.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/style.css}" />
+<script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+<script type="text/javascript"
+	th:src="@{/webjars/bootsrap/js/bootstrap.min.js}"></script>
+
+</head>
+<body>
+	<div th:fragment="user_export" th:remove="tag">
+		<div class="d-flex flex-row-reverse">
+			<a th:href="@{/users/new}"
+				class="p-2 fas fa-user-plus fa-3x icon-dark"></a> <a
+				th:href="@{/users/export/csv}" class="p-2">CSV로 내보내기</a> &nbsp;
+			|&nbsp; <a th:href="@{/users/export/excel}" class="p-2">Excel로
+				내보내기</a> &nbsp; | &nbsp; <a th:href="@{/users/export/pdf}" class="p-2">PDF로
+				내보내기</a>
+		</div>
+	</div>
+
+	<div th:fragment="column_link(fieldName, columnLabel, removeTag)"
+		th:remove="${removeTag}">
+		<a class="text-dark"
+			th:href="@{'/users/page/' + ${currentPage} + '?sortField=' + ${fieldName}  +'&sortDir=' + ${sortField != fieldName ? sortDir : reverseSortDir} + ${keyword != null ? '&keyword=' + keyword : ''}}">
+			[[${columnLabel}]] </a> <span th:if="${sortField == fieldName}"
+			th:class="${sortDir == 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}"></span>
+	</div>
+
+	<a th:fragment="page_link(pageNum, label)" class="page-link"
+		th:href="@{'/users/page/' + ${pageNum} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + ${keyword != null ? '&keyword=' + keyword : ''}}">[[${label}]]</a>
+
+	<div th:fragment="user_photos" th:remove="tag">
+		<a th:href="@{'/users/edit/'+ ${user.id}}" title="사용자 수정하기"> <span
+			th:if="${user.photos == null}"
+			class="fas fa-portrait fa-3x icon-silver"></span> <img
+			th:if="${user.photos != null}" th:src="@{${user.photosImagePath}}"
+			style="width: 100px" />
+		</a>
+	</div>
+	<div th:fragment="user_status" th:remove="tag">
+		<a th:if="${user.enabled == true}"
+			class="fas fa-check-circle fa-2x icon-green"
+			th:href="@{'/users/' + ${user.id} + '/enabled/false'}"
+			title="클릭 시, 비활성화"></a> <a th:if="${user.enabled == false}"
+			class="fas fa-times-circle fa-2x icon-red"
+			th:href="@{'/users/' + ${user.id} + '/enabled/true'}"
+			title="클릭 시, 활성화"></a>
+	</div>
+
+
+	<div th:fragment="user_actions" th:remove="tag">
+		<a class="fas fa-edit fa-2x icon-dark"
+			th:href="@{'/users/edit/'+ ${user.id}}" title="사용자 수정하기"></a> &nbsp;
+		<a class="fas fa-trash fa-2x icon-dark link-delete"
+			th:href="@{'/users/delete/'+ ${user.id}}" title="사용자 삭제하기"></a>
+	</div>
+</body>
+
+
+<footer th:fragment="footer" style="text-align: center">
+<hr>
+	<p>
+		<!-- <div class="footer_nav">
+		<div class="footer_nav_container"> -->
+		<a href="."> Home</a> | <a href="." rel="nofollow">About</a> | <a
+			href="." rel="nofollow">Contact</a> | <a href="." rel="nofollow">Terms
+			of Use</a> | <a href="." rel="nofollow">Privacy Policy</a>
+	</p>
+	<p>
+		<img src="img/logo.jpg"> (주) PlayMealKit<br>
+		PlayMealKit@playmealkit.com <br> <br> COPYRIGHT(C) <strong>
+			PlayMealKit</strong> ALL RIGHTS RESERVED.
+	</p>
+
+
+</footer>
+
+</html>

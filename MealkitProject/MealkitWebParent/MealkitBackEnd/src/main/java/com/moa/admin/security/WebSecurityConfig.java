@@ -16,7 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-	
+
 	@Bean
 	public UserDetailsService userDetailsService() {
 		return new MealkitUserDetailsService();
